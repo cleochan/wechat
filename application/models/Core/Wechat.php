@@ -38,7 +38,7 @@ class Core_Wechat
             }
 
         }else {
-        	echo "No Data Entry.";
+        	echo "Error: No Data Entry.";
         	exit;
         }
     }
