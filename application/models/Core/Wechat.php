@@ -13,7 +13,7 @@ class Core_Wechat
     function ResponseMsg()
     {
         if (!empty($this->receive_content)){
-
+            
             $postObj = simplexml_load_string($this->receive_content, 'SimpleXMLElement', LIBXML_NOCDATA);
             $fromUsername = $postObj->FromUserName;
             $toUsername = $postObj->ToUserName;
@@ -38,7 +38,7 @@ class Core_Wechat
             }
 
         }else {
-        	echo "";
+        	echo "No Data Entry.";
         	exit;
         }
     }
