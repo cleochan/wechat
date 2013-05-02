@@ -18,7 +18,11 @@ class IndexController extends Zend_Controller_Action
     {
         $wechat_class = new Core_Wechat();
         
-        $receive_content = $wechat_class->ReceiveMsg();
+        $wechat_class->receive_content = $wechat_class->ReceiveMsg();
+        
+        $wechat_class->response_content = "OK1";
+        
+        $wechat_class->ResponseMsg();
         
         die;
     }
