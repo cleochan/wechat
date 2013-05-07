@@ -15,8 +15,6 @@ class IndexController extends Zend_Controller_Action
 		$data = $log_transaction_model->ReceiveMsg();
 		$data_json = Zend_Json::encode($data);
 		$log_transaction_model->InsertLog($data_json);
-		echo "here";
-		die;
     }
 	
     function indexAction()
