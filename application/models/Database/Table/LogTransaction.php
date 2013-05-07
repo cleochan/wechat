@@ -1,7 +1,9 @@
 <?php
 
-class Database_Table_LogsTransaction extends Zend_Db_Table
+class Database_Table_LogTransaction extends Zend_Db_Table
 {
+	protected $_name = 'log_transaction';
+	
 	function ReceiveMsg()
 	{
 		$data = $GLOBALS["HTTP_RAW_POST_DATA"];
