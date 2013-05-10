@@ -1,8 +1,8 @@
 <?php
 
-class Database_Table_LogTransaction extends Zend_Db_Table
+class Database_Table_SystemLogTransaction extends Zend_Db_Table
 {
-	protected $_name = 'log_transaction';
+	protected $_name = 'system_log_transaction';
 	
 	function ReceiveMsg()
 	{
