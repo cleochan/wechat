@@ -10,8 +10,12 @@ class Database_Table_SystemLogProcess extends Zend_Db_Table
 	var $issue_key;
 	var $issue_value;
 	
-	function InsertLog()
+	function InsertLog($postObj)
 	{
+		$this->wechat_ref = $postObj->FromUserName;
+		$this->issue_key = "E1"; //text from sender
+		$this->issue_value = $postObj->Content;
+		
 		$error = NULL;
 		
 		if($this->wechat_ref) // wechat_ref is a required param
@@ -41,10 +45,46 @@ class Database_Table_SystemLogProcess extends Zend_Db_Table
 				$row->issue_value = $this->issue_value;
 			}
 			
+			$row->issue_time = date("Y-m-d H:i:s");
+			
 			$system_log_process_id = $row->save();
 			
 		}else{
 			$error = "Key parameter missing.";
 		}
 	}
+	
+	function GetLastLog($wechat_ref)
+	{
+		$row = $this->fetchRow("wechat_ref='".$wechat_ref."'", "system_log_process_id DESC");
+		
+		return $row->toArray();
+	}
+	
+	function ServicePoint($postObj)
+	{
+		$last_log = $this->GetLastLog($postObj->FromUserName);
+		
+		if(!empty($last_log))
+		{
+			$service = $last_log['service_id'];
+		}else{
+			$service = 0;
+		}
+		
+		if($service)
+		{
+			$system_service_model = new Database_Table_SystemService();
+			$system_service_model->service_id = $service;
+			$service_info = $system_service_model->GetServiceInfo();
+			$service_name = ucwords($service_info['service_code']);
+		}else{
+			$service_name = NULL;
+		}
+		
+		return $service_name;
+	}
+	
+	
+	
 }

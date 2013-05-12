@@ -42,4 +42,22 @@ class Database_Table_SystemService extends Zend_Db_Table
 		
 		return $client;
 	}
+	
+	function GetServiceList()
+	{
+		$services = $this->fetchAll("service_status=1");
+		$services = $services->toArray();
+		
+		$result = array();
+		
+		if(!empty($services))
+		{
+			foreach($service as $s)
+			{
+				$result[$s['service_id']] = $s['service_name'];
+			}
+		}
+		
+		return $result;
+	}
 }

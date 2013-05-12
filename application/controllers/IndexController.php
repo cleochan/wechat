@@ -20,8 +20,8 @@ class IndexController extends Zend_Controller_Action
 	
     function indexAction()
     {
-        $this->wechat_model->ResponseMsg($this->wechat_model->ReceiveMsgObject($this->wechat_model->ReceiveMsgXml()), "hello world2");
         
+    	
         die;
     }
 }
