@@ -11,21 +11,18 @@ class IndexController extends Zend_Controller_Action
 	
     function preDispatch()
     {  
-		$log_transaction_model = new Database_Table_LogTransaction();
-		$this->data = $log_transaction_model->ReceiveMsg();
+		$this->wechat_model = new Core_Wechat();
+		$this->data = $this->wechat_model->ReceiveMsgXml();
 		$data_json = Zend_Json::encode($this->data);
-		$log_transaction_model->InsertLog($data_json);
+		$this->system_log_transaction_model = new Database_Table_SystemLogTransaction();
+		$this->system_log_transaction_model->InsertLog($data_json);
     }
 	
     function indexAction()
     {
         $wechat_class = new Core_Wechat();
         
-        $wechat_class->receive_content = $wechat_class->ReceiveMsg();
-        
-        $wechat_class->response_content = "OK1";
-        
-        $wechat_class->ResponseMsg();
+        $wechat_class->ResponseMsg($wechat_class->ReceiveMsgObject($wechat_class->ReceiveMsgXml()), "hello world");
         
         die;
     }
