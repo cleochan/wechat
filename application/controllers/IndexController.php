@@ -12,8 +12,8 @@ class IndexController extends Zend_Controller_Action
     function preDispatch()
     {  
 		$log_transaction_model = new Database_Table_LogTransaction();
-		$data = $log_transaction_model->ReceiveMsg();
-		$data_json = Zend_Json::encode($data);
+		$this->data = $log_transaction_model->ReceiveMsg();
+		$data_json = Zend_Json::encode($this->data);
 		$log_transaction_model->InsertLog($data_json);
     }
 	
@@ -28,17 +28,6 @@ class IndexController extends Zend_Controller_Action
         $wechat_class->ResponseMsg();
         
         die;
-    }
-    
-    function t1Action()
-    {
-    	ini_set("soap.wsdl_cache_enabled", "0"); // disabling WSDL cache
-    	 
-    	$client = new SoapClient("http://t1.ciaomark.com/wsdl/ticket.wsdl");
-    	
-    	print_r($client->S1(2));
-    	
-    	die;
     }
 }
 

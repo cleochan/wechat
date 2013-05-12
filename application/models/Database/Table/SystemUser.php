@@ -38,4 +38,21 @@ class Database_Table_SystemUser extends Zend_Db_Table
 		
 		return $result;
 	}
+	
+	function UserExisted() //RETURN BOOLEAN
+	{
+		$result = FALSE;
+		
+		if($this->service_id && $this->wechat_ref)
+		{
+			$row = $this->fetchRow("service_id='".$this->service_id."' and wechat_ref='".$this->wechat_ref."'");
+			
+			if($row->user_id)
+			{
+				$result = TRUE;
+			}
+		}
+		
+		return $result;
+	}
 }
