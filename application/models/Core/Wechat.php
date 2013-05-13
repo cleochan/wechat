@@ -2,7 +2,14 @@
 
 class Core_Wechat
 {   
-    function ReceiveMsgXml()
+    var $service_id;
+    var $post_object;
+    
+    //consts for issue key
+    const ERROR_KEY_PARAMETER_MISSING = 0;
+    const ANONYMOUS_DEFAULT_MSG_SENT = 1;
+	
+	function ReceiveMsgXml()
     {
         return $GLOBALS["HTTP_RAW_POST_DATA"];
     }
@@ -59,6 +66,67 @@ class Core_Wechat
     	$msg .= "\n\nPlease note: Anytime you would like to be back to this screen, send message as 'exit' or 'quit', enjoy!";
     	
     	return $msg;
+    }
+    
+    /**
+     * $proceed_result[0] = array( //FOR PROCESS LOG
+     * 								"user_id" =>
+     *								"service_id" =>
+     *								"service_user_id" =>
+     *								"wechat_ref" =>
+     *								"issue_key" =>
+     *								"issue_value" =>
+     * 							)
+     * $proceed_result[1] = array( //FOR RESPONSE MESSAGE
+     * 								"response_contents" =>
+     * 							)
+     */
+    function Proceed() //for requests without service
+    {
+    	$result = array();
+    	
+    	$result_for_process_log = array(
+    			"user_id" => NULL,
+    			"service_user_id" => NULL,
+    			"issue_key" => NULL,
+    			"issue_value" => NULL
+    	);
+    	
+    	$result_for_response_message = array(
+    			"response_contents" => NULL
+    	);
+    	
+    	if(!$this->service_id && $this->post_object) //proceed
+    	{
+    		$result_for_process_log = array(
+    				"user_id" => NULL,
+    				"service_user_id" => NULL,
+    				"issue_key" => self::ANONYMOUS_DEFAULT_MSG_SENT,
+    				"issue_value" => NULL
+    		);
+    		
+    		$result_for_response_message = array(
+    				"response_contents" => $this->AnonymousDefaultMsg()
+    		);
+    	}else{ //incorrect response
+    		$result_for_process_log = array(
+    				"user_id" => NULL,
+    				"service_user_id" => NULL,
+    				"issue_key" => self::ERROR_KEY_PARAMETER_MISSING,
+    				"issue_value" => "Error: Key Parameter Missing."
+    		);
+    		
+    		$result_for_response_message = array(
+    				"response_contents" => "Error: Key Parameter Missing."
+    		);
+    	}
+    	
+    	$result = array(
+    			0 => $result_for_process_log,
+    			1 => $result_for_response_message
+    	);
+    	
+    	return $result;
     }
 }
 

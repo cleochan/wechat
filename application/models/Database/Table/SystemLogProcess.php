@@ -10,12 +10,8 @@ class Database_Table_SystemLogProcess extends Zend_Db_Table
 	var $issue_key;
 	var $issue_value;
 	
-	function InsertLog($postObj)
+	function InsertLog()
 	{
-		$this->wechat_ref = $postObj->FromUserName;
-		$this->issue_key = "E1"; //text from sender
-		$this->issue_value = $postObj->Content;
-		
 		$error = NULL;
 		
 		if($this->wechat_ref) // wechat_ref is a required param
@@ -82,7 +78,7 @@ class Database_Table_SystemLogProcess extends Zend_Db_Table
 			$service_name = NULL;
 		}
 		
-		return $service_name;
+		return array($service, $service_name);
 	}
 	
 	
