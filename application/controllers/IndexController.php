@@ -37,7 +37,7 @@ class IndexController extends Zend_Controller_Action
         
         if($service_info[0])
         {
-        	$target_module = new ${"Service_".$service_info[1]}();
+        	$target_module = new Service_{$service_info[1]}();
         }else{ //no service found
         	$target_module = $this->wechat_model;
         }
