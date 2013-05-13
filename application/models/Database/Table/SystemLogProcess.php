@@ -74,7 +74,7 @@ class Database_Table_SystemLogProcess extends Zend_Db_Table
 			}else{ //service id is null
 				if(1 == $last_log['issue_key']) //anonymous msg sent
 				{
-					$service = $helper_model->ReceiveKeywordFilter(($postObj->Content));
+					$service = $helper_model->ReceiveKeywordFilter($postObj->Content);
 				}else{
 					$service = 0;
 				}
