@@ -52,7 +52,7 @@ class Database_Table_SystemService extends Zend_Db_Table
 		
 		if(!empty($services))
 		{
-			foreach($service as $s)
+			foreach($services as $s)
 			{
 				$result[$s['service_id']] = $s['service_name'];
 			}
