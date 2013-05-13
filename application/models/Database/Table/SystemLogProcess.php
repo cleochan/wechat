@@ -59,11 +59,30 @@ class Database_Table_SystemLogProcess extends Zend_Db_Table
 	
 	function ServicePoint($postObj)
 	{
+		$helper_model = new Core_Helper();
+		
+		$issue_key = NULL;
+		$issue_value = NULL;
+		
 		$last_log = $this->GetLastLog($postObj->FromUserName);
 		
 		if(!empty($last_log))
 		{
-			$service = $last_log['service_id'];
+			if($last_log['service_id'])
+			{
+				$service = $last_log['service_id'];
+			}else{ //service id is null
+				if(1 == $last_log['issue_key']) //anonymous msg sent
+				{
+					$service = $helper_model->ReceiveKeywordFilter(($postObj->Content));
+				}else{
+					$service = 0;
+				}
+			}
+			
+			$issue_key = $last_log['issue_key'];
+			$issue_value = $last_log['issue_value'];
+			
 		}else{
 			$service = 0;
 		}
@@ -73,12 +92,27 @@ class Database_Table_SystemLogProcess extends Zend_Db_Table
 			$system_service_model = new Database_Table_SystemService();
 			$system_service_model->service_id = $service;
 			$service_info = $system_service_model->GetServiceInfo();
-			$service_name = ucwords($service_info['service_code']);
+			if(!empty($service_info))
+			{
+				$service_name = ucwords($service_info['service_code']);
+			}else{
+				$service_name = NULL;
+			}
 		}else{
 			$service_name = NULL;
 		}
 		
-		return array($service, $service_name);
+		if(!$service_name)
+		{
+			$service = 0; //service is not found in db
+		}
+		
+		return array(
+				0 => $service, 
+				1 => $service_name,
+				2 => $issue_key,
+				3 => $issue_value
+		);
 	}
 	
 	
