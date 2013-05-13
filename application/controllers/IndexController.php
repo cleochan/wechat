@@ -67,7 +67,7 @@ class IndexController extends Zend_Controller_Action
         $system_log_process_model_for_reply->wechat_ref = $this->data->FromUserName;
         $system_log_process_model_for_reply->issue_key = $proceed_result[0]['issue_key'];
         $system_log_process_model_for_reply->issue_value = $proceed_result[0]['issue_value'];
-        $system_log_process_model->InsertLog();
+        $system_log_process_model_for_reply->InsertLog();
         
         //response message to user interface
         $this->wechat_model->ResponseMsg($this->data, $proceed_result[1]["response_contents"]);
