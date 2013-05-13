@@ -57,14 +57,12 @@ class Database_Table_SystemLogProcess extends Zend_Db_Table
 		return $row->toArray();
 	}
 	
-	function ServicePoint($postObj)
+	function ServicePoint($postObj, $last_log)
 	{
 		$helper_model = new Core_Helper();
 		
 		$issue_key = NULL;
 		$issue_value = NULL;
-		
-		$last_log = $this->GetLastLog($postObj->FromUserName);
 		
 		if(!empty($last_log))
 		{

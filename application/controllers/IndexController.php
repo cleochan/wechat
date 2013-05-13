@@ -21,6 +21,10 @@ class IndexController extends Zend_Controller_Action
 	
     function indexAction()
     {
+        //get last log
+    	$system_log_process_model = new Database_Table_SystemLogProcess();
+    	$get_last_log = $system_log_process_model->GetLastLog($this->data->FromUserName);
+        
         //save process log
     	$system_log_process_model = new Database_Table_SystemLogProcess();
         $system_log_process_model->wechat_ref = $this->data->FromUserName;
@@ -29,7 +33,7 @@ class IndexController extends Zend_Controller_Action
         $system_log_process_model->InsertLog();
         
         //find service
-        $service_info = $system_log_process_model->ServicePoint($this->data);
+        $service_info = $system_log_process_model->ServicePoint($this->data, $get_last_log);
         
         if($service_info[0])
         {
