@@ -1,13 +1,16 @@
 <?php 
 class Service_Ticket
 {
-	var $service_id;
 	var $post_object;
+	var $user_id;
+	var $service_id;
+	var $service_user_id;
 	var $issue_key;
 	var $issue_value;
 	
 	//consts for issue key
 	const ERROR_KEY_PARAMETER_MISSING = 0;
+	const REQUIRE_FOR_USERNAME = 'T1';
 	
     /**
      * $proceed_result[0] = array( //FOR PROCESS LOG
@@ -39,21 +42,35 @@ class Service_Ticket
     	
     	if($this->service_id && $this->post_object) //proceed
     	{
-//     		switch($this->issue_key)
-//     		{
-//     			case 
-//     		}
+    		if(1 == $this->issue_key) //come to service dashboard
+    		{
+    			//detect identity
+    			//$detect_result = $this->DetectIdentity($this->service_id, $this->post_object->FromUserName);
+    			$system_user_model = new Database_Table_SystemUser();
+    			$system_user_model->service_id = $this->service_id;
+    			$system_user_model->wechat_ref = $this->post_object->FromUserName;
+    			if($system_user_model->UserExisted()) //Existed User
+    			{
+    				
+    			}else{ // New User, Login to ticket system
+    				$response_contents = "Ticket system\n\n";
+    				$response_contents .= "1 - Login\n";
+    				$response_contents .= "2 - Go Back\n";
+    				
+    				$result_for_process_log = array(
+    						"user_id" => NULL,
+    						"service_user_id" => NULL,
+    						"issue_key" => self::REQUIRE_FOR_USERNAME,
+    						"issue_value" => NULL
+    				);
+    				
+    				$result_for_response_message = array(
+    						"response_contents" => $response_contents
+    				);
+    			}
+    		}
     		
-    		$result_for_process_log = array(
-    				"user_id" => NULL,
-    				"service_user_id" => NULL,
-    				"issue_key" => 2,
-    				"issue_value" => "success"
-    		);
-    		
-    		$result_for_response_message = array(
-    				"response_contents" => "ticket success"
-    		);
+
     	}else{ //incorrect response
     		$result_for_process_log = array(
     				"user_id" => NULL,
@@ -71,6 +88,21 @@ class Service_Ticket
     			0 => $result_for_process_log,
     			1 => $result_for_response_message
     	);
+    	
+    	return $result;
+    }
+    
+    function DetectIdentity($service_id, $wechat_ref)
+    {
+    	$post_array = array(
+    			"request_type" => "DetectIdentity",
+    			"params" => array(
+    					"wechat_ref" => $wechat_ref
+    				)
+    			);
+    	
+    	$wsdl_model = new Core_Wsdl();
+    	$result = $wsdl_model->WsdlClient($service_id, $post_array);
     	
     	return $result;
     }

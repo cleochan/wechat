@@ -2,10 +2,12 @@
 
 class Core_Wechat
 {   
-    var $service_id;
-    var $post_object;
-    var $issue_key;
-    var $issue_value;
+	var $post_object;
+	var $user_id;
+	var $service_id;
+	var $service_user_id;
+	var $issue_key;
+	var $issue_value;
     
     //consts for issue key
     const ERROR_KEY_PARAMETER_MISSING = 0;

@@ -44,8 +44,10 @@ class IndexController extends Zend_Controller_Action
         }
         
         //proeed request
-        $target_module->service_id = $service_info[0];
         $target_module->post_object = $this->data;
+        $target_module->user_id = $service_info[4];
+        $target_module->service_id = $service_info[0];
+        $target_module->service_user_id = $service_info[5];
         $target_module->issue_key = $service_info[2];
         $target_module->issue_value = $service_info[3];
         $proceed_result = $target_module -> Proceed();

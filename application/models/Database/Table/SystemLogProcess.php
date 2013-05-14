@@ -73,6 +73,8 @@ class Database_Table_SystemLogProcess extends Zend_Db_Table
 		
 		$issue_key = NULL;
 		$issue_value = NULL;
+		$user_id = NULL;
+		$service_user_id = NULL;
 		
 		if(!empty($last_log))
 		{
@@ -90,6 +92,8 @@ class Database_Table_SystemLogProcess extends Zend_Db_Table
 			
 			$issue_key = $last_log['issue_key'];
 			$issue_value = $last_log['issue_value'];
+			$user_id = $last_log['user_id'];
+			$service_user_id = $last_log['service_user_id'];
 			
 		}else{
 			$service = 0;
@@ -119,7 +123,9 @@ class Database_Table_SystemLogProcess extends Zend_Db_Table
 				0 => $service, 
 				1 => $service_name,
 				2 => $issue_key,
-				3 => $issue_value
+				3 => $issue_value,
+				4 => $user_id,
+				5 => $service_user_id
 		);
 	}
 	
