@@ -39,6 +39,11 @@ class Service_Ticket
     	
     	if($this->service_id && $this->post_object) //proceed
     	{
+//     		switch($this->issue_key)
+//     		{
+//     			case 
+//     		}
+    		
     		$result_for_process_log = array(
     				"user_id" => NULL,
     				"service_user_id" => NULL,

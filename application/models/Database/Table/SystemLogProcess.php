@@ -52,9 +52,19 @@ class Database_Table_SystemLogProcess extends Zend_Db_Table
 	
 	function GetLastLog($wechat_ref)
 	{
-		$row = $this->fetchRow("wechat_ref='".$wechat_ref."'", "system_log_process_id DESC");
+		//just fetch the data in 6 hours
+		$time_six_hour_ago = date("Y-m-d H:i:s", mktime(date("H")-6, date("i"), date("s"), date("m"), date("d"), date("Y")));
 		
-		return $row->toArray();
+		$row = $this->fetchRow("wechat_ref='".$wechat_ref."' and issue_time >= '.$time_six_hour_ago.'", "system_log_process_id DESC");
+		
+		if(!empty($row))
+		{
+			$result = $row->toArray();
+		}else{
+			$result = array();
+		}
+		
+		return $result;
 	}
 	
 	function ServicePoint($postObj, $last_log)
