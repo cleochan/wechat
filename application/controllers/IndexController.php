@@ -33,7 +33,20 @@ class IndexController extends Zend_Controller_Action
         $system_log_process_model->InsertLog();
         
         //find service
-        $service_info = $system_log_process_model->ServicePoint($this->data, $get_last_log);
+        if($this->wechat_model->QuitCommands($this->data->Content)) // master quit
+        {
+        	$service_info = array(
+        			0 => NULL,
+					1 => NULL,
+					2 => NULL,
+					3 => NULL,
+					4 => NULL,
+					5 => NULL
+        	);
+        }else{
+        	$service_info = $system_log_process_model->ServicePoint($this->data, $get_last_log);
+        }
+        
         
         if($service_info[0])
         {

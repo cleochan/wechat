@@ -132,6 +132,26 @@ class Core_Wechat
     	
     	return $result;
     }
+    
+    function QuitCommands($command=NULL)
+    {
+    	$quit_commands = array("quit", "exit");
+    	
+    	if($command)
+    	{
+    		$helper = new Core_Helper();
+    		if(in_array($helper->ReceiveKeywordFilter($command), $quit_commands))
+    		{
+    			$result = TRUE;
+    		}else{
+    			$result = FALSE;
+    		}
+    	}else{
+    		$result = $quit_commands;
+    	}
+    	
+    	return $result;
+    }
 }
 
 
