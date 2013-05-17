@@ -8,7 +8,7 @@ class Core_Helper
 	
 	function OptionsDecolation($options_array, $with_key=NULL)
 	{
-		$result_string = "";
+		$result = "";
 		$n = 1;
 		
 		if(count($options_array))
@@ -29,7 +29,7 @@ class Core_Helper
 			$result .= "\n";
 		}
 		
-		return $result_string;
+		return $result;
 	}
 	
 	function NoticesDecolation($options_array)
