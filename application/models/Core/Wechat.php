@@ -52,22 +52,11 @@ class Core_Wechat
     {
     	$system_service = new Database_Table_SystemService();
     	$service_array = $system_service->GetServiceList();
+    	$helper = new Core_Helper();
     	
-    	$service_element_array = array();
-    	
-    	if(!empty($service_array))
-    	{
-    		foreach($service_array as $s_key => $s_val)
-    		{
-    			$service_element_array[] = $s_key." - ".$s_val;
-    		}
-    		
-    		$service_msg = implode("\n", $service_element_array);
-    	}
-    	
-    	$msg = "Welcome to Mark API, please choose your service:\n\n";
-    	$msg .= $service_msg;
-    	$msg .= "\n\nPlease note: Anytime you would like to be back to this screen, send message as 'exit' or 'quit', enjoy!";
+    	$msg = $helper->HeaderDecolation("Welcome to Mark API, please choose your service:");
+    	$msg .= $helper->OptionsDecolation($service_array, TRUE);
+    	$msg .= $helper->FooterDecolation("Please note: Anytime you would like to be back to this screen, send message as 'exit' or 'quit', enjoy!");
     	
     	return $msg;
     }

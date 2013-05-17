@@ -5,4 +5,62 @@ class Core_Helper
 	{
 		return strtolower(trim($contents));
 	}
+	
+	function OptionsDecolation($options_array, $with_key=NULL)
+	{
+		$result_string = "";
+		$result_array = array();
+		$n = 1;
+		
+		if(count($options_array))
+		{
+			$result .= "\n";
+			
+			foreach($options_array as $option_key => $option_value)
+			{
+				if($with_key)
+				{
+					$result .= $option_key." - ".$option_value."\n";
+					$result_array[$option_key] = $option_value;
+				}else{
+					$result .= $n." - ".$option_value."\n";
+					$result_array[$n] = $option_value;
+					$n += 1;
+				}
+			}
+
+			$result .= "\n";
+		}
+		
+		return array($result_string, $result_array);
+	}
+	
+	function NoticesDecolation($options_array)
+	{
+		$result_string = "";
+		
+		if(count($options_array))
+		{
+			$result .= "\n";
+			
+			foreach($options_array as $option_value)
+			{
+				$result .= "* - ".$option_value."\n";
+			}
+
+			$result .= "\n";
+		}
+		
+		return $result_string;
+	}
+	
+	function HeaderDecolation($string)
+	{
+		return $string."\n";
+	}
+	
+	function FooterDecolation($string)
+	{
+		return $string;
+	}
 }

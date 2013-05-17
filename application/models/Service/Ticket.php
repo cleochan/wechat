@@ -27,6 +27,7 @@ class Service_Ticket
      */
     function Proceed()
     {
+    	$helper = new Core_Helper();
     	$result = array();
     	
     	$result_for_process_log = array(
@@ -53,9 +54,10 @@ class Service_Ticket
     			{
     				
     			}else{ // New User, Login to ticket system
-    				$response_contents = "Ticket system\n\n";
-    				$response_contents .= "1 - Login\n";
-    				$response_contents .= "2 - Go Back\n";
+    				$options = array("Login", "Go Back");
+    				
+    				$msg = $helper->HeaderDecolation("You are in TICKET SYSTEM.");
+    				$msg .= $helper->OptionsDecolation($options);
     				
     				$result_for_process_log = array(
     						"user_id" => NULL,
@@ -65,7 +67,7 @@ class Service_Ticket
     				);
     				
     				$result_for_response_message = array(
-    						"response_contents" => $response_contents
+    						"response_contents" => $msg
     				);
     			}
     		}
