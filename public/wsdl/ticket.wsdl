@@ -14,7 +14,7 @@
 
 <message name='getQuoteRequest'>
 
-  <part name='symbol' type='xsd:string'/>
+  <part name='symbol' type='xsd:array'/>
 
 </message>
 
