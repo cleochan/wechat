@@ -15,7 +15,7 @@ class Core_Wsdl
 		$service_model->service_id = $service_id;
 		$client = $service_model->MakeServiceObject();
 		$result = $client->S1($post_array); //post to server
-		print_r($result);
+		
 		return $result;
 	}
 }

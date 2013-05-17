@@ -31,16 +31,5 @@ class PluginController extends Zend_Controller_Action
     	echo ">>".$result."<<";
     	die;
     }
-    
-    function dumpObjAction()
-    {
-    	$service_model = new Database_Table_SystemService();
-    	$service_model->service_id = 1;
-    	$client = $service_model->MakeServiceObject();
-    	echo "<pre>";
-    	print_r($client);
-    	echo "<pre>";
-    	die;
-    }
 }
 
