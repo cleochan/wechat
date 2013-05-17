@@ -21,7 +21,7 @@ class PluginController extends Zend_Controller_Action
     	$post_array = array(
     			"request_type" => "DetectIdentity",
     			"params" => array(
-    					"username" => "markchan",
+    					"username" => "aaa",
     					"password" => md5("07131921")
     			)
     	);
