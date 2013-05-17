@@ -9,7 +9,6 @@ class Core_Helper
 	function OptionsDecolation($options_array, $with_key=NULL)
 	{
 		$result_string = "";
-		$result_array = array();
 		$n = 1;
 		
 		if(count($options_array))
@@ -21,10 +20,8 @@ class Core_Helper
 				if($with_key)
 				{
 					$result .= $option_key." - ".$option_value."\n";
-					$result_array[$option_key] = $option_value;
 				}else{
 					$result .= $n." - ".$option_value."\n";
-					$result_array[$n] = $option_value;
 					$n += 1;
 				}
 			}
@@ -32,7 +29,7 @@ class Core_Helper
 			$result .= "\n";
 		}
 		
-		return array($result_string, $result_array);
+		return $result_string;
 	}
 	
 	function NoticesDecolation($options_array)
