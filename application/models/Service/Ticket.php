@@ -57,7 +57,7 @@ class Service_Ticket
     						"request_type" => "DetectIdentity",
     						"params" => array(
     							"username" => $this->issue_value,
-    							"password" => md5($this->post_object->content)
+    							"password" => md5($this->post_object->Content)
     						)
     				);
     				
