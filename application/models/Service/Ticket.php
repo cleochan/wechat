@@ -121,7 +121,7 @@ class Service_Ticket
     					"user_id" => NULL,
     					"service_user_id" => NULL,
     					"issue_key" => self::REQUIRE_FOR_PASSWORD,
-    					"issue_value" => $this->post_object->content
+    					"issue_value" => $this->post_object->Content
     			);
     			
     			$result_for_response_message = array(
