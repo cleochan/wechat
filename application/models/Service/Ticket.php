@@ -11,6 +11,8 @@ class Service_Ticket
 	//consts for issue key
 	const ERROR_KEY_PARAMETER_MISSING = 0;
 	const REQUIRE_FOR_USERNAME = 'T1';
+	const REQUIRE_FOR_PASSWORD = 'T2';
+	const BK = 'T3';
 	
     /**
      * $proceed_result[0] = array( //FOR PROCESS LOG
@@ -70,6 +72,34 @@ class Service_Ticket
     						"response_contents" => $msg
     				);
     			}
+    		}elseif("T1" == $this->issue_key) //require for username
+    		{
+    			$msg = $helper->HeaderDecolation("Please enter your username in ticket system:");
+    			
+    			$result_for_process_log = array(
+    					"user_id" => NULL,
+    					"service_user_id" => NULL,
+    					"issue_key" => self::REQUIRE_FOR_PASSWORD,
+    					"issue_value" => $this->post_object->content
+    			);
+    			
+    			$result_for_response_message = array(
+    					"response_contents" => $msg
+    			);
+    		}elseif("T2" == $this->issue_key) //require for password
+    		{
+    			$msg = $helper->HeaderDecolation("bk");
+    			
+    			$result_for_process_log = array(
+    					"user_id" => NULL,
+    					"service_user_id" => NULL,
+    					"issue_key" => self::BK,
+    					"issue_value" => NULL
+    			);
+    			
+    			$result_for_response_message = array(
+    					"response_contents" => $msg
+    			);
     		}
     		
 
