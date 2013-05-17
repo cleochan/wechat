@@ -12,7 +12,7 @@ class Service_Ticket
 	const ERROR_KEY_PARAMETER_MISSING = 0;
 	const REQUIRE_FOR_USERNAME = 'T1';
 	const REQUIRE_FOR_PASSWORD = 'T2';
-	const BK = 'T3';
+	const DASHBOARD = 1;
 	
     /**
      * $proceed_result[0] = array( //FOR PROCESS LOG
@@ -30,6 +30,8 @@ class Service_Ticket
     function Proceed()
     {
     	$helper = new Core_Helper();
+    	$wsdl = new Core_Wsdl();
+    	$system_user_model = new Database_Table_SystemUser();
     	$result = array();
     	
     	$result_for_process_log = array(
@@ -45,8 +47,31 @@ class Service_Ticket
     	
     	if($this->service_id && $this->post_object) //proceed
     	{
-    		if(1 == $this->issue_key) //come to service dashboard
+    		if(1 == $this->issue_key) //dashboard
     		{
+    			if($this->issue_value) //regiester local user for ticket user
+    			{
+    				//$this->issue_value -> username
+    				//$this->post_object->content -> original password
+    				$post_array = array(
+    						"request_type" => "DetectIdentity",
+    						"params" => array(
+    							"username" => $this->issue_value,
+    							"password" => md5($this->post_object->content)
+    						)
+    				);
+    				
+    				$result = $wsdl->WsdlClient(1, $post_array); //$result = service_user_id
+    				
+    				if($result) //register in local db
+    				{
+    					$system_user_model->service_id = 1;
+    					$system_user_model->service_user_id = $result;
+    					$system_user_model->wechat_ref = $this->post_object->FromUserName;
+    					$system_user_model->UserRegistration();
+    				}
+    			}
+    			
     			//detect identity
     			//$detect_result = $this->DetectIdentity($this->service_id, $this->post_object->FromUserName);
     			$system_user_model = new Database_Table_SystemUser();
@@ -54,7 +79,21 @@ class Service_Ticket
     			$system_user_model->wechat_ref = $this->post_object->FromUserName;
     			if($system_user_model->UserExisted()) //Existed User
     			{
+    				$options = array("Create Request", "View My Tasks", "Go Back");
     				
+    				$msg = $helper->HeaderDecolation("You are in TICKET SYSTEM.");
+    				$msg .= $helper->OptionsDecolation($options);
+    				
+    				$result_for_process_log = array(
+    						"user_id" => NULL,
+    						"service_user_id" => NULL,
+    						"issue_key" => NULL,
+    						"issue_value" => NULL
+    				);
+    				
+    				$result_for_response_message = array(
+    						"response_contents" => $msg
+    				);
     			}else{ // New User, Login to ticket system
     				$options = array("Login", "Go Back");
     				
@@ -74,7 +113,9 @@ class Service_Ticket
     			}
     		}elseif("T1" == $this->issue_key) //require for username
     		{
+    			$options = array("Go Back");
     			$msg = $helper->HeaderDecolation("Please enter your username in ticket system:");
+    			$msg .= $helper->OptionsDecolation($options);
     			
     			$result_for_process_log = array(
     					"user_id" => NULL,
@@ -88,13 +129,15 @@ class Service_Ticket
     			);
     		}elseif("T2" == $this->issue_key) //require for password
     		{
-    			$msg = $helper->HeaderDecolation("bk");
+    			$options = array("Go Back");
+    			$msg = $helper->HeaderDecolation("Please enter your password:");
+    			$msg .= $helper->OptionsDecolation($options);
     			
     			$result_for_process_log = array(
     					"user_id" => NULL,
     					"service_user_id" => NULL,
-    					"issue_key" => self::BK,
-    					"issue_value" => NULL
+    					"issue_key" => self::DASHBOARD,
+    					"issue_value" => $this->issue_value
     			);
     			
     			$result_for_response_message = array(
